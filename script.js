@@ -1,24 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('Script loaded'); // Debug: Check for multiple loads
+
   const form = document.getElementById('antibioticForm');
   const submitBtn = document.getElementById('submitBtn');
   const loader = document.getElementById('loader');
   const formMessage = document.getElementById('formMessage');
   const addBtn = document.getElementById('addAntibioticBtn');
   const container = document.getElementById('antibioticsContainer');
-  
-  // 🔴 REPLACE WITH YOUR ACTUAL DEPLOYMENT URL
+
   const scriptURL = 'https://script.google.com/macros/s/AKfycbyINo1Ym1uKIuJq6qmyaabCCUruzFUgTkXKdp6Hoa5myMTFPmzYbzSXkUmesFuBeJzO/exec';
 
-  // Add antibiotic entry
-  addBtn.addEventListener('click', () => {
-    const newEntry = container.firstElementChild.cloneNode(true);
-    newEntry.querySelectorAll('input, select').forEach(el => {
-      if (el.tagName === 'SELECT') el.selectedIndex = 0;
-      else el.value = '';
+  // Prevent multiple bindings (in case this script loads again)
+  if (!addBtn.dataset.listenerAdded) {
+    addBtn.addEventListener('click', () => {
+      console.log('Add Antibiotic button clicked'); // Debug
+
+      const newEntry = container.firstElementChild.cloneNode(true);
+      newEntry.querySelectorAll('input, select').forEach(el => {
+        if (el.tagName === 'SELECT') el.selectedIndex = 0;
+        else el.value = '';
+      });
+      container.appendChild(newEntry);
+      updateAntibioticsCount();
     });
-    container.appendChild(newEntry);
-    updateAntibioticsCount();
-  });
+
+    addBtn.dataset.listenerAdded = 'true';
+  }
 
   // Remove entry
   container.addEventListener('click', e => {
@@ -33,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Update antibiotics count
   function updateAntibioticsCount() {
-    document.getElementById('antibioticsCount').value = 
+    document.getElementById('antibioticsCount').value =
       document.querySelectorAll('.antibiotic-entry').length;
   }
 
@@ -45,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     formMessage.textContent = '';
 
     try {
-      // Validate required fields first
       if (!form.checkValidity()) {
         form.reportValidity();
         throw new Error('الرجاء ملء جميع الحقول المطلوبة');
@@ -58,17 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
         method: 'POST',
         body: params,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        mode: 'no-cors', // 🔴 Important change here
+        mode: 'no-cors',
         redirect: 'follow'
       });
 
-      // Handle redirect for no-cors mode
       if (response.redirected) {
         window.location.href = response.url;
         return;
       }
 
-      // Handle success
       formMessage.textContent = '✅ تم حفظ البيانات بنجاح';
       formMessage.style.color = '#00ffea';
       form.reset();
