@@ -1,81 +1,77 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Untitled</title>
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<!DOCTYPE html>
-<html lang="ar" dir="artl">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>استمارة المضادات الحيوية</title>  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="استمارة صرف المضادات الحيوية لملء بيانات المرضى ووصف العلاجات." />
+  <title>Antibiotic Dispensing Form</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <button id="toggleDarkMode" style="position: fixed; top: 15px; left: 15px; z-index: 1000; padding: 8px 12px;">🌃</button>
-  <script>
-    const toggle = document.getElementById('toggleDarkMode');
-    const darkClass = 'dark-mode';
+  <!-- Dark Mode Toggle -->
+  <button id="toggleDarkMode" aria-label="تبديل الوضع الليلي">🌃</button>
 
-    if (localStorage.getItem('darkMode') === 'true') {
-      document.body.classList.add(darkClass);
-    }
-
-    toggle.addEventListener('click', () => {
-      document.body.classList.toggle(darkClass);
-      localStorage.setItem('darkMode', document.body.classList.contains(darkClass));
-    });
-  </script>
-</body>
-</html>
-
-<body>
   <div class="container">
-    <h2>Antibiotic Dispensing Form
-</h2>
+    <h2>Antibiotic Dispensing Form</h2>
+
     <form id="antibioticForm">
       <input type="hidden" name="sheetName" value="Antibiotic_Records" />
 
-      <label for="patientName">اسم المريض</label>
-      <input type="text" id="patientName" name="patientName" required placeholder="الاسم الكامل" />
+      <!-- Patient Information -->
+      <div class="form-group">
+        <input type="text" id="patientName" name="patientName" required placeholder=" " />
+        <label for="patientName">اسم المريض</label>
+      </div>
 
-      <label for="age">العمر</label>
-      <input type="number" id="age" name="age" required placeholder="العمر بالسنوات" />
+      <div class="form-group">
+        <input type="number" id="age" name="age" required placeholder=" " />
+        <label for="age">العمر</label>
+      </div>
 
-      <label for="ward">الردهة</label>
-      <select id="ward" name="ward" required>
-        <option value="">اختر الردهة</option>
-        <option value="الوحدة العصبية">الوحدة العصبية</option>
-        <option value="الوحدة الباطنية">الوحدة الباطنية</option>
-        <option value="الوحدة الجراحية">الوحدة الجراحية</option>
-        <option value="الوحدة النسائية">الوحدة النسائية</option>
-        <option value="وحدة العناية المركزه">وحدة العناية المركزه</option>
-      </select>
+      <div class="form-group">
+        <select id="ward" name="ward" required>
+          <option value=""></option>
+          <option value="الوحدة العصبية">الوحدة العصبية</option>
+          <option value="الوحدة الباطنية">الوحدة الباطنية</option>
+          <option value="الوحدة الجراحية">الوحدة الجراحية</option>
+          <option value="الوحدة النسائية">الوحدة النسائية</option>
+          <option value="وحدة العناية المركزه">وحدة العناية المركزه</option>
+        </select>
+        <label for="ward">الردهة</label>
+      </div>
 
-      <label for="diagnosis">التشخيص (بالإنجليزية)</label>
-      <input type="text" id="diagnosis" name="diagnosis" required pattern="[A-Za-z\s]+" placeholder="Medical Diagnosis in English" title="Please enter diagnosis in English only." />
+      <div class="form-group">
+        <input type="text" id="diagnosis" name="diagnosis" required pattern="[A-Za-z\s]+" placeholder=" " />
+        <label for="diagnosis">التشخيص (بالإنجليزية)</label>
+      </div>
 
-      <label for="hospitalizationPeriod">فترة الرقود</label>
-      <input type="number" id="hospitalizationPeriod" name="hospitalizationPeriod" required placeholder="عدد الأيام" />
+      <div class="form-group">
+        <input type="number" id="hospitalizationPeriod" name="hospitalizationPeriod" required placeholder=" " />
+        <label for="hospitalizationPeriod">فترة الرقود (أيام)</label>
+      </div>
 
-      <label for="allergy">الحساسية</label>
-      <select id="allergy" name="allergy" required>
-        <option value="">اختر</option>
-        <option value="نعم">نعم</option>
-        <option value="لا">لا</option>
-      </select>
+      <div class="form-group">
+        <select id="allergy" name="allergy" required>
+          <option value=""></option>
+          <option value="نعم">نعم</option>
+          <option value="لا">لا</option>
+        </select>
+        <label for="allergy">الحساسية</label>
+      </div>
 
-      <label for="antibioticsCount">عدد المضادات الموصوفة (رقم)</label>
-      <input type="number" id="antibioticsCount" name="antibioticsCount" required placeholder="عدد المضادات" />
+      <div class="form-group">
+        <input type="number" id="antibioticsCount" name="antibioticsCount" required readonly />
+        <label for="antibioticsCount">عدد المضادات الموصوفة</label>
+      </div>
 
+      <!-- Antibiotic Entries -->
       <div id="antibioticsContainer">
         <div class="antibiotic-entry">
-          <select name="antibioticNames[]" required>
-            <optgroup label="1. Penicillins 🧪">
+          <div class="form-group">
+            <select name="antibioticNames[]" required>
+              <option value=""></option>
+              <!-- FULL ANTIBIOTIC OPTIONS HERE -->
+             <optgroup label="1. Penicillins 🧪">
   <option value="Amoxicillin">Amoxicillin</option>
   <option value="Ampicillin">Ampicillin</option>
   <option value="Amoxicillin-Clavulanate">Amoxicillin-Clavulanate</option>
@@ -86,7 +82,7 @@
   <option value="Ceftriaxone">Ceftriaxone</option>
   <option value="Ceftazidime">Ceftazidime</option>
   <option value="Cefepime">Cefepime</option>
-  <option value="Ceftazidime">Ceftaroline</option>
+  <option value="cefotaxime">cefotaxime</option>
 </optgroup>
 
 <optgroup label="3. Macrolides 📜">
@@ -156,117 +152,117 @@
   <option value="Rifampin">Rifampin</option>
   <option value="Mupirocin">Mupirocin</option>
 </optgroup>
-          </select>
-          <input type="number" name="dosages[]" placeholder="الجرعة (ملغ)" required />
-          <select name="frequency[]" required>
-            <option value="">التكرار</option>
-            <option value="1">1  يوميا</option>
-            <option value="2">2   يوميا</option>
-            <option value="3">3   يوميا</option>
-            <option value="4">4   يوميا</option>
-            <option value="other-day"> بين يوم و اخر   </option>
-          </select>
-          <input type="number" name="duration[]" placeholder="فترة البقاء على المضاد (رقم)" required />
-          <select name="cultureExist[]" required>
-            <option value="">وجود زرع؟</option>
-            <option value="نعم">نعم</option>
-            <option value="لا">لا</option>
-          </select>
-          <select name="review48h[]" required>
-            <option value="">مراجعة بعد 48-72 ساعة</option>
-            <option value="نعم">نعم</option>
-            <option value="لا">لا</option>
-          </select>
-          <select name="sameDose[]" required>
-            <option value="">الاستمرار على نفس الجرعة</option>
-            <option value="نعم">نعم</option>
-            <option value="لا">لا</option>
-          </select>
-          <select name="increaseDose[]" required>
-            <option value="">زيادة الجرعة</option>
-            <option value="نعم">نعم</option>
-            <option value="لا">لا</option>
-          </select>
-          <select name="decreaseDose[]" required>
-            <option value="">تقليل الجرعة</option>
-            <option value="نعم">نعم</option>
-            <option value="لا">لا</option>
-          </select>
-          <select name="changeAb[]" required>
-            <option value="">تغيير المضاد</option>
-            <option value="نعم">نعم</option>
-            <option value="لا">لا</option>
-          </select>
-          <select name="addAb[]" required>
-            <option value="">إضافة مضاد</option>
-            <option value="نعم">نعم</option>
-            <option value="لا">لا</option>
-          </select>
-          <select name="stopAb[]" required>
-            <option value="">توقف مضاد</option>
-            <option value="نعم">نعم</option>
-            <option value="لا">لا</option>
-          </select>
-          <button type="button" class="remove-btn">×</button>
+            </select>
+            <label>اسم المضاد الحيوي</label>
+          </div>
+
+          <div class="form-group">
+            <input type="number" name="dosages[]" placeholder=" " required />
+            <label>الجرعة (ملغ)</label>
+          </div>
+
+          <div class="form-group">
+            <select name="frequency[]" required>
+              <option value=""></option>
+              <option value="1">1 يوميا</option>
+              <option value="2">2 يوميا</option>
+              <option value="3">3 يوميا</option>
+              <option value="4">4 يوميا</option>
+              <option value="other-day">بين يوم و اخر</option>
+            </select>
+            <label>التكرار</label>
+          </div>
+
+          <div class="form-group">
+            <input type="number" name="duration[]" placeholder=" " required />
+            <label>فترة البقاء على المضاد (أيام)</label>
+          </div>
+
+          <div class="form-group">
+            <select name="cultureExist[]" required>
+              <option value=""></option>
+              <option value="نعم">نعم</option>
+              <option value="لا">لا</option>
+            </select>
+            <label>وجود زرع؟</label>
+          </div>
+
+          <div class="form-group">
+            <select name="review48h[]" required>
+              <option value=""></option>
+              <option value="نعم">نعم</option>
+              <option value="لا">لا</option>
+            </select>
+            <label>مراجعة بعد 48-72 ساعة</label>
+          </div>
+
+          <button type="button" class="remove-btn" aria-label="إزالة المضاد">×</button>
         </div>
       </div>
 
-      <button type="button" id="addAntibioticBtn">إضافة مضاد</button>
+      <button type="button" id="addAntibioticBtn" class="btn" aria-label="إضافة مضاد جديد">إضافة مضاد</button>
 
       <!-- Outcome Section -->
-      <label for="recovery">شفاء</label>
-      <select id="recovery" name="recovery" required>
-        <option value="">اختر</option>
-        <option value="نعم">نعم</option>
-        <option value="لا">لا</option>
-      </select>
+      <div class="form-group">
+        <select id="recovery" name="recovery" required>
+          <option value=""></option>
+          <option value="نعم">نعم</option>
+          <option value="لا">لا</option>
+        </select>
+        <label for="recovery">شفاء</label>
+      </div>
 
-      <label for="deterioration">تدهور</label>
-      <select id="deterioration" name="deterioration" required>
-        <option value="">اختر</option>
-        <option value="نعم">نعم</option>
-        <option value="لا">لا</option>
-      </select>
+      <div class="form-group">
+        <select id="deterioration" name="deterioration" required>
+          <option value=""></option>
+          <option value="نعم">نعم</option>
+          <option value="لا">لا</option>
+        </select>
+        <label for="deterioration">تدهور</label>
+      </div>
 
-      <label for="death">موت</label>
-      <select id="death" name="death" required>
-        <option value="">اختر</option>
-        <option value="نعم">نعم</option>
-        <option value="لا">لا</option>
-      </select>
+      <div class="form-group">
+        <select id="death" name="death" required>
+          <option value=""></option>
+          <option value="نعم">نعم</option>
+          <option value="لا">لا</option>
+        </select>
+        <label for="death">موت</label>
+      </div>
 
-      <label for="dischargeContinue">خروج مع استمرار المضاد</label>
-      <select id="dischargeContinue" name="dischargeContinue" required>
-        <option value="">اختر</option>
-        <option value="نعم">نعم</option>
-        <option value="لا">لا</option>
-      </select>
+      <div class="form-group">
+        <select id="dischargeContinue" name="dischargeContinue" required>
+          <option value=""></option>
+          <option value="نعم">نعم</option>
+          <option value="لا">لا</option>
+        </select>
+        <label for="dischargeContinue">خروج مع استمرار المضاد</label>
+      </div>
 
-      <label for="dischargeStop">خروج و توقف المضاد</label>
-      <select id="dischargeStop" name="dischargeStop" required>
-        <option value="">اختر</option>
-        <option value="نعم">نعم</option>
-        <option value="لا">لا</option>
-      </select>
+      <div class="form-group">
+        <select id="dischargeStop" name="dischargeStop" required>
+          <option value=""></option>
+          <option value="نعم">نعم</option>
+          <option value="لا">لا</option>
+        </select>
+        <label for="dischargeStop">خروج و توقف المضاد</label>
+      </div>
 
-      <label for="pharmacist">اسم الصيدلاني</label>
-      <input type="text" id="pharmacist" name="pharmacist" required placeholder="اسم الصيدلاني المسؤول" />
+      <div class="form-group">
+        <input type="text" id="pharmacist" name="pharmacist" required placeholder=" " />
+        <label for="pharmacist">اسم الصيدلاني</label>
+      </div>
 
-      <button id="submitBtn" type="submit">إرسال</button>
-      <div id="loader" class="spinner" style="display:none;"></div>
+      <button type="submit" id="submitBtn" class="btn" aria-label="إرسال الاستمارة">إرسال</button>
+      <div id="loader" class="spinner" style="display:none;" aria-label="تحميل..."></div>
       <p id="formMessage"></p>
     </form>
   </div>
 
-  <div class="footer">
-    <p>made by Luay</p>
-  </div>
+ <footer class="footer" style="text-align: center; padding: 10px;">
+  <p>MADE BY LUAY</p>
+</footer>
 
   <script src="script.js"></script>
-</body>
-</html>
-<!-- partial -->
-  <script  src="./script.js"></script>
-
 </body>
 </html>
